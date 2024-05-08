@@ -76,7 +76,7 @@ class PreferencesMenu extends Page
       var value = !checkbox.currentValue;
       onChange(value);
       checkbox.currentValue = value;
-    });
+    }, true);
 
     preferenceItems.add(checkbox);
   }
