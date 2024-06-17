@@ -48,9 +48,6 @@ import lime.utils.Assets;
 import flixel.tweens.misc.ShakeTween;
 import funkin.effects.IntervalShake;
 import funkin.ui.freeplay.SongMenuItem.FreeplayRank;
-#if discord_rpc
-import funkin.api.discord.Discord.DiscordClient;
-#end
 
 /**
  * Parameters used to initialize the FreeplayState.
