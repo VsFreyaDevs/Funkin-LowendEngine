@@ -138,6 +138,41 @@ class DJBoyfriend extends FlxAtlasSprite
       default:
         // I shit myself.
     }
+    
+    if (FlxG.keys.pressed.CONTROL)
+    {
+      #if debug
+      if (FlxG.keys.justPressed.LEFT)
+      {
+        this.offsetX -= FlxG.keys.pressed.ALT ? 0.1 : (FlxG.keys.pressed.SHIFT ? 10.0 : 1.0);
+      }
+
+      if (FlxG.keys.justPressed.RIGHT)
+      {
+        this.offsetX += FlxG.keys.pressed.ALT ? 0.1 : (FlxG.keys.pressed.SHIFT ? 10.0 : 1.0);
+      }
+
+      if (FlxG.keys.justPressed.UP)
+      {
+        this.offsetY -= FlxG.keys.pressed.ALT ? 0.1 : (FlxG.keys.pressed.SHIFT ? 10.0 : 1.0);
+      }
+
+      if (FlxG.keys.justPressed.DOWN)
+      {
+        this.offsetY += FlxG.keys.pressed.ALT ? 0.1 : (FlxG.keys.pressed.SHIFT ? 10.0 : 1.0);
+      }
+      #end
+
+      if (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.EIGHT)
+      {
+        currentState = (currentState == Idle ? TV : Idle);
+      }
+
+      if (FlxG.keys.justPressed.NINE)
+      {
+        currentState = (currentState == Idle ? Spook : Idle);
+      }
+    }
   }
 
   function onFinishAnim():Void
