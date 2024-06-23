@@ -1104,6 +1104,7 @@ class PlayState extends MusicBeatSubState
 
   function moveToGameOver():Void
   {
+    currentStage.getBoyfriend().canPlayOtherAnims = true;
     // Reset and update a bunch of values in advance for the transition back from the game over substate.
     playerStrumline.clean();
     opponentStrumline.clean();
