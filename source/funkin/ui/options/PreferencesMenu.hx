@@ -6,6 +6,8 @@ import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import funkin.ui.AtlasText.AtlasFont;
 import funkin.ui.options.OptionsState.Page;
+import funkin.ui.options.items.CheckboxPreferenceItem;
+import funkin.ui.options.items.NumberPreferenceItem;
 import funkin.graphics.FunkinCamera;
 import funkin.ui.TextMenuList.TextMenuItem;
 
@@ -48,6 +50,11 @@ class PreferencesMenu extends Page
    */
   function createPrefItems():Void
   {
+    #if !web
+    createPrefItemNumber('FPS', 'The framerate that the game is running on', function(value:Float) {
+      Preferences.framerate = Std.int(value);
+    }, Preferences.framerate, 60, 360, 1, 0);
+    #end
     createPrefItemCheckbox('Naughtyness', 'Toggle displaying raunchy content', function(value:Bool):Void {
       Preferences.naughtyness = value;
     }, Preferences.naughtyness);
@@ -68,6 +75,36 @@ class PreferencesMenu extends Page
     }, Preferences.autoPause);
   }
 
+  override function update(elapsed:Float):Void
+  {
+    super.update(elapsed);
+
+    // Indent the selected item.
+    // TODO: Only do this on menu change?
+    items.forEach(function(daItem:TextMenuItem) {
+      var thyOffset:Int = 0;
+      if (Std.isOfType(daItem, NumberPreferenceItem)) thyOffset = cast(daItem, NumberPreferenceItem).lefthandText.getWidth();
+
+      // Very messy but it works
+      if (thyOffset == 0)
+      {
+        if (items.selectedItem == daItem) thyOffset += 150;
+        else
+          thyOffset += 120;
+      }
+      else if (items.selectedItem == daItem)
+      {
+        thyOffset += 70;
+      }
+      else
+      {
+        thyOffset += 25;
+      }
+
+      daItem.x = thyOffset;
+    });
+  }
+
   function createPrefItemCheckbox(prefName:String, prefDesc:String, onChange:Bool->Void, defaultValue:Bool):Void
   {
     var checkbox:CheckboxPreferenceItem = new CheckboxPreferenceItem(0, 120 * (items.length - 1 + 1), defaultValue);
@@ -81,62 +118,11 @@ class PreferencesMenu extends Page
     preferenceItems.add(checkbox);
   }
 
-  override function update(elapsed:Float)
+  function createPrefItemNumber(prefName:String, prefDesc:String, onChange:Float->Void, defaultValue:Float, min:Float, max:Float, step:Float,
+      precision:Int):Void
   {
-    super.update(elapsed);
-
-    // Indent the selected item.
-    // TODO: Only do this on menu change?
-    items.forEach(function(daItem:TextMenuItem) {
-      if (items.selectedItem == daItem) daItem.x = 150;
-      else
-        daItem.x = 120;
-    });
-  }
-}
-
-class CheckboxPreferenceItem extends FlxSprite
-{
-  public var currentValue(default, set):Bool;
-
-  public function new(x:Float, y:Float, defaultValue:Bool = false)
-  {
-    super(x, y);
-
-    frames = Paths.getSparrowAtlas('checkboxThingie');
-    animation.addByPrefix('static', 'Check Box unselected', 24, false);
-    animation.addByPrefix('checked', 'Check Box selecting animation', 24, false);
-
-    setGraphicSize(Std.int(width * 0.7));
-    updateHitbox();
-
-    this.currentValue = defaultValue;
-  }
-
-  override function update(elapsed:Float)
-  {
-    super.update(elapsed);
-
-    switch (animation.curAnim.name)
-    {
-      case 'static':
-        offset.set();
-      case 'checked':
-        offset.set(17, 70);
-    }
-  }
-
-  function set_currentValue(value:Bool):Bool
-  {
-    if (value)
-    {
-      animation.play('checked', true);
-    }
-    else
-    {
-      animation.play('static');
-    }
-
-    return currentValue = value;
+    var item = new NumberPreferenceItem(145, (120 * items.length) + 30, prefName, defaultValue, min, max, step, precision, onChange);
+    items.addItem(prefName, item);
+    preferenceItems.add(item.lefthandText);
   }
 }
