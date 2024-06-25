@@ -53,7 +53,7 @@ class PreferencesMenu extends Page
     #if !web
     createPrefItemNumber('FPS', 'The framerate that the game is running on', function(value:Float) {
       Preferences.framerate = Std.int(value);
-    }, Preferences.framerate, 60, 360, 1, 0);
+    }, Preferences.framerate, 12, 480, 1, 0);
     #end
     createPrefItemCheckbox('Naughtyness', 'Toggle displaying raunchy content', function(value:Bool):Void {
       Preferences.naughtyness = value;
