@@ -55,6 +55,9 @@ class PreferencesMenu extends Page
       Preferences.framerate = Std.int(value);
     }, Preferences.framerate, 12, 480, 1, 0);
     #end
+    createPrefItemCheckbox('Ghost Tapping', 'Enable to disable ghost misses', function(value:Bool):Void {
+      Preferences.ghostTapping = value;
+    }, Preferences.ghostTapping);
     createPrefItemCheckbox('Naughtyness', 'Toggle displaying raunchy content', function(value:Bool):Void {
       Preferences.naughtyness = value;
     }, Preferences.naughtyness);

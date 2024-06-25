@@ -12,7 +12,7 @@ class Prebuild
   static function main():Void
   {
     saveBuildTime();
-    trace('Building...');
+    haxe.Log.trace('Building...', null);
   }
 
   static function saveBuildTime():Void

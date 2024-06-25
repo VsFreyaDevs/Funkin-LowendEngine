@@ -22,8 +22,8 @@ class MathUtil
    *
    * @return The interpolated value.
    */
-  @:deprecated('Use smoothLerp instead')
-  public static function coolLerp(base:Float, target:Float, ratio:Float):Float
+  // @:deprecated('Use smoothLerp instead')
+  public static inline function coolLerp(base:Float, target:Float, ratio:Float):Float
   {
     return base + cameraLerp(ratio) * (target - base);
   }
@@ -34,8 +34,8 @@ class MathUtil
    *
    * @return The interpolated value.
    */
-  @:deprecated('Use smoothLerp instead')
-  public static function cameraLerp(lerp:Float):Float
+  // @:deprecated('Use smoothLerp instead')
+  public static inline function cameraLerp(lerp:Float):Float
   {
     return lerp * (FlxG.elapsed / (1 / 60));
   }
@@ -47,7 +47,7 @@ class MathUtil
    * @param target The array or group used in the wrapping procedure.
    * @return The wrapped value.
    */
-  public static function curSelectionWrap(curSelection, increment, target):Int
+  public static inline function curSelectionWrap(curSelection, increment, target):Int
   {
     return FlxMath.wrap(curSelection + increment, 0, target.length - 1);
   }
@@ -58,7 +58,7 @@ class MathUtil
    * @param value The value to get the logarithm of.
    * @return `log_base(value)`
    */
-  public static function logBase(base:Float, value:Float):Float
+  public static inline function logBase(base:Float, value:Float):Float
   {
     return Math.log(value) / Math.log(base);
   }
@@ -108,7 +108,7 @@ class MathUtil
    * @param x value
    * @return `2^x`
    */
-  public static function exp2(x:Float):Float
+  inline public static function exp2(x:Float):Float
   {
     return Math.pow(2, x);
   }
@@ -152,5 +152,11 @@ class MathUtil
     if (Math.abs(result - target) < (precision * target)) result = target;
 
     return result;
+  }
+
+  inline public static function boundInt(value:Int, ?min:Int, ?max:Int):Int
+  {
+    final lowerBound = (min != null && value < min) ? min : value;
+    return (max != null && lowerBound > max) ? max : lowerBound;
   }
 }

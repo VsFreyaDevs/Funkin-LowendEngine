@@ -513,7 +513,14 @@ class Constants
    * If true, the player will not receive the ghost miss penalty if there are no notes within the hit window.
    * This is the thing people have been begging for forever lolol.
    */
-  public static final GHOST_TAPPING:Bool = false;
+  @:deprecated("Deprecated! Use Preferences.ghostTapping instead!")
+  public static var GHOST_TAPPING(get, set):Bool;
+
+  @:noCompletion inline static function get_GHOST_TAPPING():Bool
+    return Preferences.ghostTapping;
+
+  @:noCompletion inline static function set_GHOST_TAPPING(value:Bool):Bool
+    return Preferences.ghostTapping = value;
 
   /**
    * The maximum number of previous file paths for the Chart Editor to remember.

@@ -92,6 +92,7 @@ class Save
           framerate: 60,
           naughtyness: true,
           downscroll: false,
+          ghostTapping: false,
           flashingLights: true,
           zoomCamera: true,
           debugDisplay: false,
@@ -1074,6 +1075,13 @@ typedef SaveDataOptions =
    */
   var downscroll:Bool;
 
+  /**
+   * If true, the player will not receive the ghost miss penalty if there are no notes within the hit window.
+   * This is the thing people have been begging for forever lolol.
+   * @default `false`
+   */
+  var ghostTapping:Bool;
+  
   /**
    * If disabled, flashing lights in the main menu and other areas will be less intense.
    * @default `true`

@@ -75,6 +75,26 @@ class Preferences
   }
 
   /**
+   * If true, the player will not receive the ghost miss penalty if there are no notes within the hit window.
+   * This is the thing people have been begging for forever lolol.
+   * @default `false`
+   */
+  public static var ghostTapping(get, set):Bool;
+
+  static function get_ghostTapping():Bool
+  {
+    return Save?.instance?.options?.ghostTapping ?? false;
+  }
+
+  static function set_ghostTapping(value:Bool):Bool
+  {
+    var save:Save = Save.instance;
+    save.options.ghostTapping = value;
+    save.flush();
+    return value;
+  }
+
+  /**
    * If disabled, flashing lights in the main menu and other areas will be less intense.
    * @default `true`
    */
