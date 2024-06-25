@@ -63,6 +63,16 @@ class MathUtil
     return Math.log(value) / Math.log(base);
   }
 
+  public static inline function fpsLerp(v1:Float, v2:Float, ratio:Float):Float
+  {
+    return flixel.math.FlxMath.lerp(v1, v2, getFPSRatio(ratio));
+  }
+
+  public static inline function getFPSRatio(ratio:Float):Float
+  {
+    return flixel.math.FlxMath.bound(ratio * 60 * FlxG.elapsed, 0, 1);
+  }
+
   public static function easeInOutCirc(x:Float):Float
   {
     if (x <= 0.0) return 0.0;

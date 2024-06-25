@@ -346,6 +346,14 @@ class TitleState extends MusicBeatState
     }
     if (pressedEnter && !skippedIntro && initialized) skipIntro();
 
+    // Better than hitting ALT + F4
+    #if (desktop && !web)
+    if (FlxG.keys.justPressed.ESCAPE)
+    {
+      Sys.exit(0);
+    }
+    #end
+    
     if (controls.UI_LEFT) swagShader.update(-elapsed * 0.1);
     if (controls.UI_RIGHT) swagShader.update(elapsed * 0.1);
     if (!cheatActive && skippedIntro) cheatCodeShit();

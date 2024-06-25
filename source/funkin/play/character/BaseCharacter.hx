@@ -486,6 +486,7 @@ class BaseCharacter extends Bopper
   public override function onNoteHit(event:HitNoteScriptEvent)
   {
     super.onNoteHit(event);
+    if (event.note.noteData.kind == "noAnimation" || event.note.noAnimation) return;
 
     if (event.note.noteData.getMustHitNote() && characterType == BF)
     {
@@ -508,6 +509,7 @@ class BaseCharacter extends Bopper
   public override function onNoteMiss(event:NoteScriptEvent)
   {
     super.onNoteMiss(event);
+    if (event.note.noteData.kind == "noAnimation" || event.note.noAnimation) return;
 
     if (event.note.noteData.getMustHitNote() && characterType == BF)
     {
