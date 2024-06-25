@@ -195,6 +195,12 @@ class PlayState extends MusicBeatSubState
   public var needsReset:Bool = false;
 
   /**
+   * Resets the Characters and their sprites.
+   * Gets disabled once resetting happens.
+   **/
+  public var needsCharacterReset:Bool = false;
+
+  /**
    * Map of the boppers that will reset their bop speed once the restart occurs.
    */
   public var resetBoppers:Map<Bopper, Int> = new Map<Bopper, Int>();
@@ -885,6 +891,13 @@ class PlayState extends MusicBeatSubState
       vocals.opponentVolume = 1;
 
       if (currentStage != null) currentStage.resetStage();
+
+      if (needsCharacterReset)
+      {
+        initCharacterReset();
+        initCharacters();
+        needsCharacterReset = false;
+      }
 
       if (!fromDeathState)
       {
@@ -1777,6 +1790,27 @@ class PlayState extends MusicBeatSubState
       // Rearrange by z-indexes.
       currentStage.refresh();
     }
+  }
+
+  function initCharacterReset():Void
+  {
+    if (currentSong == null || currentChart == null)
+      trace('Song difficulty could not be loaded.');
+
+    if (currentStage.getDad() != null && iconP2 != null)
+    {
+      currentStage.getDad(true);
+      remove(iconP2);
+    }
+
+    if (currentStage.getBoyfriend() != null && iconP1 != null)
+    {
+      currentStage.getBoyfriend(true);
+      remove(iconP1);
+    }
+
+    if (currentStage.getGirlfriend() != null)
+      currentStage.getGirlfriend(true);
   }
 
   /**
