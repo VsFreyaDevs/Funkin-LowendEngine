@@ -205,13 +205,13 @@ class HealthIcon extends FunkinSprite
       if (this.width > this.height)
       {
         // Apply linear interpolation while accounting for frame rate.
-        var targetSize:Int = Std.int(MathUtil.coolLerp(this.width, HEALTH_ICON_SIZE * this.size.x, 0.15));
+        var targetSize:Float = MathUtil.coolLerp(this.width, HEALTH_ICON_SIZE * this.size.x, 0.15);
 
         setGraphicSize(targetSize, 0);
       }
       else
       {
-        var targetSize:Int = Std.int(MathUtil.coolLerp(this.height, HEALTH_ICON_SIZE * this.size.y, 0.15));
+        var targetSize:Float = MathUtil.coolLerp(this.height, HEALTH_ICON_SIZE * this.size.y, 0.15);
 
         setGraphicSize(0, targetSize);
       }
@@ -267,11 +267,11 @@ class HealthIcon extends FunkinSprite
       // Make the icon increase in size (the update function causes them to lerp back down).
       if (this.width > this.height)
       {
-        setGraphicSize(Std.int(this.width + (HEALTH_ICON_SIZE * this.size.x * BOP_SCALE)), 0);
+        setGraphicSize(this.width + (HEALTH_ICON_SIZE * this.size.x * BOP_SCALE), 0);
       }
       else
       {
-        setGraphicSize(0, Std.int(this.height + (HEALTH_ICON_SIZE * this.size.y * BOP_SCALE)));
+        setGraphicSize(0, this.height + (HEALTH_ICON_SIZE * this.size.y * BOP_SCALE));
       }
       // Make the icon twist (the update function causes them to lerp back to normal).
       this.angle += bopAngle * (playerId == 0 ? 1 : -1);

@@ -1544,7 +1544,7 @@ class PlayState extends MusicBeatSubState
    *
    * TODO: Move some of this logic into `Bopper.hx`, or individual character scripts.
    */
-  function danceOnBeat():Void
+  public function danceOnBeat():Void
   {
     if (currentStage == null) return;
 
@@ -1562,7 +1562,7 @@ class PlayState extends MusicBeatSubState
   /**
    * Initializes the game and HUD cameras.
    */
-  function initCameras():Void
+  public function initCameras():Void
   {
     camGame = new FunkinCamera('playStateCamGame');
     camGame.bgColor = BACKGROUND_COLOR; // Show a pink background behind the stage.
@@ -1619,12 +1619,12 @@ class PlayState extends MusicBeatSubState
   /**
    * Generates the stage and all its props.
    */
-  function initStage():Void
+  public function initStage():Void
   {
     loadStage(currentStageId);
   }
 
-  function initMinimalMode():Void
+  public function initMinimalMode():Void
   {
     // Create the green background.
     var menuBG = FunkinSprite.create('menuDesat');
@@ -1684,7 +1684,7 @@ class PlayState extends MusicBeatSubState
   /**
    * Generates the character sprites and adds them to the stage.
    */
-  function initCharacters():Void
+  public function initCharacters():Void
   {
     if (currentSong == null || currentChart == null)
     {

@@ -189,6 +189,8 @@ class Countdown
     {
       switch (index)
       {
+        case THREE:
+          spritePath = 'weeb/pixelUI/prepare-pixel';
         case TWO:
           spritePath = 'weeb/pixelUI/ready-pixel';
         case ONE:
@@ -203,6 +205,8 @@ class Countdown
     {
       switch (index)
       {
+        case THREE:
+          spritePath = 'prepare';
         case TWO:
           spritePath = 'ready';
         case ONE:
