@@ -153,6 +153,7 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<haxeflag name="-dce no" />
 	<!-- Ensure all Funkin' classes are available at runtime. -->
 	<haxeflag name="--macro" value="include('funkin')" />
+	<haxeflag name="--macro" value="allowPackage('flash')" />
 	<!-- Ensure all UI components are available at runtime. -->
 	<haxeflag name="--macro" value="include('haxe.ui.backend.flixel.components')" />
 	<haxeflag name="--macro" value="include('haxe.ui.containers.dialogs')" />

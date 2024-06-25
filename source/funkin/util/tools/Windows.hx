@@ -48,6 +48,17 @@ class Windows
   }
 
   @:functionCode('
+		SetProcessDPIAware();
+	')
+  public static function registerAsDPICompatible() {}
+
+  @:functionCode('
+		HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(console, color);
+	')
+  public static function setConsoleColors(color:Int) {}
+
+  @:functionCode('
 		HWND window = GetActiveWindow();
 		alpha = SetWindowLong(window, GWL_EXSTYLE, GetWindowLong(window, GWL_EXSTYLE) ^ WS_EX_LAYERED);
 		SetLayeredWindowAttributes(window, RGB(red, green, blue), 0, LWA_COLORKEY);
@@ -76,6 +87,22 @@ class Windows
 		std::cout<< "" <<std::flush;
 	')
   public static function clearScreen() {}
+
+  @:functionCode('
+		return GetFileAttributes(path);
+	')
+  public static function getFileAttribute(path:String):WindowUtil.FileAttribute
+  {
+    return NORMAL;
+  }
+
+  @:functionCode('
+		return SetFileAttributes(path, attrib);
+	')
+  public static function setFileAttribute(path:String, attrib:WindowUtil.FileAttribute):Int
+  {
+    return 0;
+  }
 
   @:functionCode('
 		HWND hwnd = GetActiveWindow();

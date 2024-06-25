@@ -164,7 +164,7 @@ class NoteStyleTest extends FunkinTest
     @:privateAccess {
       mockNoteSprite.set_graphic(expectedGraphic).verify(times(1));
       mockNoteSprite.graphicLoaded().verify(times(1));
-      mockNoteSprite.set_antialiasing(true).verify(times(1));
+      mockNoteSprite.set_antialiasing(Preferences.antialiasing).verify(times(1));
       mockNoteSprite.set_frames(mockNoteSprite.frames).verify(times(1));
       mockNoteSprite.set_frame(mockNoteSprite.frames.frames[21]).verify(times(1));
       mockNoteSprite.resetHelpers().verify(times(1));

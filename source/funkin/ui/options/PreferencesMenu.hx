@@ -61,12 +61,18 @@ class PreferencesMenu extends Page
     createPrefItemCheckbox('Naughtyness', 'Toggle displaying raunchy content', function(value:Bool):Void {
       Preferences.naughtyness = value;
     }, Preferences.naughtyness);
+    createPrefItemCheckbox('Note Splashes', 'Disable to remove splash animations when hitting notes', function(value:Bool):Void {
+      Preferences.noteSplash = value;
+    }, Preferences.noteSplash);
     createPrefItemCheckbox('Downscroll', 'Enable to make notes move downwards', function(value:Bool):Void {
       Preferences.downscroll = value;
     }, Preferences.downscroll);
     createPrefItemCheckbox('Flashing Lights', 'Disable to dampen flashing effects', function(value:Bool):Void {
       Preferences.flashingLights = value;
     }, Preferences.flashingLights);
+    createPrefItemCheckbox('Antialiasing', 'Disable to increase performance at the cost of sharper visuals.', function(value:Bool):Void {
+      Preferences.antialiasing = value;
+    }, Preferences.antialiasing);
     createPrefItemCheckbox('Camera Zooming on Beat', 'Disable to stop the camera bouncing to the song', function(value:Bool):Void {
       Preferences.zoomCamera = value;
     }, Preferences.zoomCamera);

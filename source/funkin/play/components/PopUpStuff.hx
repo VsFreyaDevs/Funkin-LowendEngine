@@ -48,7 +48,7 @@ class PopUpStuff extends FlxTypedGroup<FlxSprite>
     else
     {
       rating.setGraphicSize(Std.int(rating.width * 0.65));
-      rating.antialiasing = true;
+      rating.antialiasing = Preferences.antialiasing;
     }
     rating.updateHitbox();
 
@@ -100,7 +100,7 @@ class PopUpStuff extends FlxTypedGroup<FlxSprite>
     else
     {
       comboSpr.setGraphicSize(Std.int(comboSpr.width * 0.7));
-      comboSpr.antialiasing = true;
+      comboSpr.antialiasing = Preferences.antialiasing;
     }
     comboSpr.updateHitbox();
 
@@ -139,7 +139,7 @@ class PopUpStuff extends FlxTypedGroup<FlxSprite>
       else
       {
         numScore.setGraphicSize(Std.int(numScore.width * 0.45));
-        numScore.antialiasing = true;
+        numScore.antialiasing = Preferences.antialiasing;
       }
       numScore.updateHitbox();
 

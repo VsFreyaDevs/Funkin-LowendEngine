@@ -425,7 +425,9 @@ class HealthIcon extends FunkinSprite
       loadAnimationOld();
     }
 
-    this.antialiasing = !isPixel;
+    if (isPixel) this.antialiasing = false;
+    else
+      this.antialiasing = Preferences.antialiasing;
   }
 
   /**

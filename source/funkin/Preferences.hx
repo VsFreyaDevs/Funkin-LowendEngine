@@ -8,7 +8,7 @@ import funkin.save.Save;
 class Preferences
 {
   /**
-   * FPS
+   * The framerate.
    * @default `60`
    */
   public static var framerate(get, set):Int;
@@ -20,6 +20,25 @@ class Preferences
     #else
     return Save?.instance?.options?.framerate ?? 60;
     #end
+  }
+
+  /**
+   * Whenever to display a splash animation when perfectly hitting a note.
+   * @default `true`
+   */
+  public static var noteSplash(get, set):Bool;
+
+  static function get_noteSplash():Bool
+  {
+    return Save?.instance?.options?.noteSplash;
+  }
+
+  static function set_noteSplash(value:Bool):Bool
+  {
+    var save:Save = Save.instance;
+    save.options.noteSplash = value;
+    save.flush();
+    return value;
   }
 
   static function set_framerate(value:Int):Int
@@ -34,6 +53,25 @@ class Preferences
     FlxG.drawFramerate = value;
     return value;
     #end
+  }
+
+  /**
+   * If enabled, makes the graphics look sharper, however it can reduce performance.
+   * @default `true`
+   */
+  public static var antialiasing(get, set):Bool;
+
+  static function get_antialiasing():Bool
+  {
+    return Save?.instance?.options?.antialiasing;
+  }
+
+  static function set_antialiasing(value:Bool):Bool
+  {
+    var save:Save = Save.instance;
+    save.options.antialiasing = value;
+    save.flush();
+    return value;
   }
 
   /**

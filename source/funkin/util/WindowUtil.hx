@@ -1,6 +1,8 @@
 package funkin.util;
 
 import flixel.util.FlxSignal.FlxTypedSignal;
+import funkin.util.tools.Windows;
+import lime.app.Application;
 
 using StringTools;
 
@@ -16,6 +18,33 @@ using StringTools;
 #end
 class WindowUtil
 {
+  /**
+   * Gets the specified file's (or folder) attribute.
+   */
+  public static function getFileAttribute(path:String, useAbsol:Bool = true):FileAttribute
+  {
+    #if windows
+    if (useAbsol) path = sys.FileSystem.absolutePath(path);
+    return WindowUtil.getFileAttribute(path);
+    #else
+    return NORMAL;
+    #end
+  }
+
+  /**
+   * Sets the specified file's (or folder) attribute. If it fails, the return value is `0`.
+   */
+  public static function setFileAttribute(path:String, attrib:FileAttribute, useAbsol:Bool = true):Int
+  {
+    #if windows
+    if (useAbsol) path = sys.FileSystem.absolutePath(path);
+    return WindowUtil.setFileAttribute(path, attrib);
+    #else
+    return 0;
+    #end
+  }
+
+
   /**
    * Runs platform-specific code to open a URL in a web browser.
    * @param targetUrl The URL to open.
@@ -122,4 +151,25 @@ class WindowUtil
   {
     lime.app.Application.current.window.title = value;
   }
+}
+
+enum abstract FileAttribute(Int)
+{
+  // Settables
+  var ARCHIVE = 0x20;
+  var HIDDEN = 0x2;
+  var NORMAL = 0x80;
+  var NOT_CONTENT_INDEXED = 0x2000;
+  var OFFLINE = 0x1000;
+  var READONLY = 0x1;
+  var SYSTEM = 0x4;
+  var TEMPORARY = 0x100;
+
+  // Non Settables
+  var COMPRESSED = 0x800;
+  var DEVICE = 0x40;
+  var DIRECTORY = 0x10;
+  var ENCRYPTED = 0x4000;
+  var REPARSE_POINT = 0x400;
+  var SPARSE_FILE = 0x200;
 }

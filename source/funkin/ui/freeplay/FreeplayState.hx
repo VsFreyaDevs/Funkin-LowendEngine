@@ -435,7 +435,7 @@ class FreeplayState extends MusicBeatSubState
         Reversed: false,
         // ?OnComplete:Void -> Void,
         ShowPivot: false,
-        Antialiasing: true,
+        Antialiasing: Preferences.antialiasing,
         ScrollFactor: new FlxPoint(1, 1),
       });
 

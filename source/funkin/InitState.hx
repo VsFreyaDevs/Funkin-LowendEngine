@@ -81,7 +81,7 @@ class InitState extends FlxState
     WindowUtil.disableCrashHandler();
 
     // This ain't a pixel art game! (most of the time)
-    FlxSprite.defaultAntialiasing = true; // TODO: Add antialising option.
+    FlxSprite.defaultAntialiasing = Preferences.antialiasing;
 
     // Disable default keybinds for volume (we manually control volume in MusicBeatState with custom binds)
     FlxG.sound.volumeUpKeys = [];
@@ -223,6 +223,8 @@ class InitState extends FlxState
       gc();
     });
 
+    #if sys funkin.util.FileUtil.safeSetAttribute('./.temp/', HIDDEN); #end
+    
     trace('Parsing game data took: ${TimerUtil.ms(perfStart)}');
   }
 

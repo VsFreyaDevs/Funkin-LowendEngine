@@ -19,7 +19,7 @@ class FlxAtlasSprite extends FlxAnimate
       Reversed: false,
       // ?OnComplete:Void -> Void,
       ShowPivot: #if debug false #else false #end,
-      Antialiasing: true,
+      Antialiasing: Preferences.antialiasing,
       ScrollFactor: null,
       // Offset: new FlxPoint(0, 0), // This is just FlxSprite.offset
     };

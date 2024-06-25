@@ -145,7 +145,7 @@ class DialogueBox extends FlxSpriteGroup implements IDialogueScriptedClass imple
     }
     else
     {
-      this.boxSprite.antialiasing = true;
+      this.boxSprite.antialiasing = Preferences.antialiasing;
     }
 
     this.flipX = _data.flipX;

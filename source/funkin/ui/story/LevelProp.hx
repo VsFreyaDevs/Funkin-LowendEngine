@@ -74,7 +74,10 @@ class LevelProp extends Bopper
 
     var scale:Float = propData.scale * (propData.isPixel ? 6 : 1);
     this.scale.set(scale, scale);
-    this.antialiasing = !propData.isPixel;
+    // this.antialiasing = !propData.isPixel;
+    if (propData.isPixel) this.antialiasing = false;
+    else
+      this.antialiasing = Preferences.antialiasing;
     this.alpha = propData.alpha;
     this.x = propData.offsets[0];
     this.y = propData.offsets[1];

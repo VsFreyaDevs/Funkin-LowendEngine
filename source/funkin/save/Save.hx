@@ -90,9 +90,11 @@ class Save
         {
           // Reasonable defaults.
           framerate: 60,
+          noteSplash: true,
           naughtyness: true,
           downscroll: false,
           ghostTapping: false,
+          antialiasing: true,
           flashingLights: true,
           zoomCamera: true,
           debugDisplay: false,
@@ -1064,6 +1066,13 @@ typedef SaveDataOptions =
   var framerate:Int;
 
   /**
+   * Whenever to display a splash animation when perfectly hitting a note.
+   * @default `true`
+   */
+  var noteSplash:Bool;
+
+  
+  /**
    * Whether some particularly fowl language is displayed.
    * @default `true`
    */
@@ -1081,7 +1090,13 @@ typedef SaveDataOptions =
    * @default `false`
    */
   var ghostTapping:Bool;
-  
+
+  /**
+   * If enabled, makes the graphics look sharper, however it can reduce performance.
+   * @default `true`
+   */
+  var antialiasing:Bool;
+
   /**
    * If disabled, flashing lights in the main menu and other areas will be less intense.
    * @default `true`

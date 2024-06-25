@@ -5,6 +5,7 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.Transition;
 import flixel.FlxCamera;
 import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.FlxSubState;
 import flixel.math.FlxMath;
@@ -473,6 +474,12 @@ class PlayState extends MusicBeatSubState
   /**
    * RENDER OBJECTS
    */
+
+  /**
+   * What?
+   */
+  var funnySexBox:FlxSprite;
+
   /**
    * The FlxText which displays the current score.
    */
@@ -1603,16 +1610,23 @@ class PlayState extends MusicBeatSubState
     healthBar.zIndex = 800;
     add(healthBar);
 
+    funnySexBox = new FlxSprite(healthBarBG.x + healthBarBG.width - 545, healthBarBG.y + 41).makeGraphic(500, 20, FlxColor.BLACK);
+    funnySexBox.alpha = 0.3;
+    add(funnySexBox);
+
     // The score text below the health bar.
-    scoreText = new FlxText(healthBarBG.x + healthBarBG.width - 190, healthBarBG.y + 30, 0, '', 20);
-    scoreText.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+    scoreText = new FlxText(0, healthBarBG.y + 41, FlxG.width, "", 20);
+    scoreText.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
     scoreText.scrollFactor.set();
-    scoreText.zIndex = 802;
+    scoreText.zIndex = 851;
+    if (Preferences.scoreText) add(scoreText);
     add(scoreText);
+    funnySexBox.scale.x = scoreText.fieldWidth;
 
     // Move the health bar to the HUD camera.
     healthBar.cameras = [camHUD];
     healthBarBG.cameras = [camHUD];
+    funnySexBox.cameras = [camHUD];
     scoreText.cameras = [camHUD];
   }
 

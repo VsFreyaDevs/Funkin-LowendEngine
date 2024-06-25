@@ -40,7 +40,7 @@ class SustainTrail extends FlxSprite
    * Set this flag to disable playing animation on hit/miss.
    */
   public var noAnimation:Bool = false;
-  
+
   /**
    * Set to `true` if the user hit the note and is currently holding the sustain.
    * Should display associated effects.
@@ -126,7 +126,7 @@ class SustainTrail extends FlxSprite
   {
     loadGraphic(noteStyle.getHoldNoteAssetPath());
 
-    antialiasing = true;
+    antialiasing = Preferences.antialiasing;
 
     this.isPixel = noteStyle.isHoldNotePixel();
     if (isPixel)

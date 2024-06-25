@@ -168,7 +168,7 @@ class ControlsMenu extends funkin.ui.options.OptionsState.Page
 
     prompt = new Prompt("\nPress any key to rebind\n\n\n  Backspace to unbind\n    Escape to cancel", None);
     prompt.create();
-    prompt.createBgFromMargin(75, 0xFFfafd6d);
+    prompt.createBgFromMargin(75, 0x88fbfd6d);
     prompt.back.scrollFactor.set(0, 0);
     prompt.exists = false;
     add(prompt);
