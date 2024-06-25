@@ -81,15 +81,20 @@ class InitState extends FlxState
     WindowUtil.disableCrashHandler();
 
     // This ain't a pixel art game! (most of the time)
-    FlxSprite.defaultAntialiasing = true;
+    FlxSprite.defaultAntialiasing = true; // TODO: Add antialising option.
 
     // Disable default keybinds for volume (we manually control volume in MusicBeatState with custom binds)
     FlxG.sound.volumeUpKeys = [];
     FlxG.sound.volumeDownKeys = [];
     FlxG.sound.muteKeys = [];
 
+    FlxG.fixedTimestep = false;
+
     // Set the game to a lower frame rate while it is in the background.
     FlxG.game.focusLostFramerate = 30;
+
+    @:privateAccess
+    FlxG.game.getTimer = () -> openfl.Lib.getTimer();
 
     setupFlixelDebug();
 
@@ -115,7 +120,7 @@ class InitState extends FlxState
     #if windows
     funkin.util.tools.Windows.setDarkMode(true);
     #end
-    
+
     //
     // NEWGROUNDS API SETUP
     //

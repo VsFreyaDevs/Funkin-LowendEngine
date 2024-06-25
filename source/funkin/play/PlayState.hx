@@ -278,6 +278,12 @@ class PlayState extends MusicBeatSubState
   public var cameraBopMultiplier:Float = 1.0;
 
   /**
+   * Multiplier for how slow should camera zoom back.
+   * Lerped back to 1.0x every frame.
+   */
+  public var cameraZoomingDecay:Float = 1.0;
+
+  /**
    * Default camera zoom for the current stage.
    * If we aren't in a stage, just use the default zoom (1.05x).
    */
@@ -691,6 +697,7 @@ class PlayState extends MusicBeatSubState
     }
 
     Conductor.instance.mapTimeChanges(currentChart.timeChanges);
+    Conductor.instance.formatOffset = (Constants.EXT_SOUND == 'mp3') ? Constants.MP3_DELAY_MS : 0.0;
     Conductor.instance.update((Conductor.instance.beatLengthMs * -5) + startTimestamp);
 
     // The song is now loaded. We can continue to initialize the play state.
@@ -942,16 +949,9 @@ class PlayState extends MusicBeatSubState
     }
     else
     {
-      if (Constants.EXT_SOUND == 'mp3')
-      {
-        Conductor.instance.formatOffset = Constants.MP3_DELAY_MS;
-      }
-      else
-      {
-        Conductor.instance.formatOffset = 0.0;
-      }
-
-      Conductor.instance.update(); // Normal conductor update.
+      Conductor.instance.update(Conductor.instance.songPosition
+        - (Conductor.instance.instrumentalOffset + Conductor.instance.formatOffset + Conductor.instance.audioVisualOffset)
+        + elapsed * 1000 * playbackRate); // Normal conductor update.
     }
 
     var androidPause:Bool = false;
@@ -1018,11 +1018,11 @@ class PlayState extends MusicBeatSubState
     // Apply camera zoom + multipliers.
     if (subState == null && cameraZoomRate > 0.0) // && !isInCutscene)
     {
-      cameraBopMultiplier = FlxMath.lerp(1.0, cameraBopMultiplier, 0.95); // Lerp bop multiplier back to 1.0x
+      cameraBopMultiplier = FlxMath.lerp(1.0, cameraBopMultiplier, Math.exp(-elapsed * 3.125 * cameraZoomingDecay)); // Lerp bop multiplier back to 1.0x
       var zoomPlusBop = currentCameraZoom * cameraBopMultiplier; // Apply camera bop multiplier.
       FlxG.camera.zoom = zoomPlusBop; // Actually apply the zoom to the camera.
 
-      camHUD.zoom = FlxMath.lerp(defaultHUDCameraZoom, camHUD.zoom, 0.95);
+      camHUD.zoom = FlxMath.lerp(defaultHUDCameraZoom, camHUD.zoom, Math.exp(-elapsed * 3.125 * cameraZoomingDecay));
     }
 
     if (currentStage != null && currentStage.getBoyfriend() != null)
@@ -1444,8 +1444,8 @@ class PlayState extends MusicBeatSubState
 
     if (!startingSong
       && FlxG.sound.music != null
-      && (Math.abs(FlxG.sound.music.time - (Conductor.instance.songPosition + Conductor.instance.instrumentalOffset)) > 200
-        || Math.abs(vocals.checkSyncError(Conductor.instance.songPosition + Conductor.instance.instrumentalOffset)) > 200))
+      && (Math.abs(FlxG.sound.music.time - (Conductor.instance.songPosition + Conductor.instance.instrumentalOffset)) > 100 * playbackRate
+        || Math.abs(vocals.checkSyncError(Conductor.instance.songPosition + Conductor.instance.instrumentalOffset)) > 100 * playbackRate))
     {
       trace("VOCALS NEED RESYNC");
       if (vocals != null) trace(vocals.checkSyncError(Conductor.instance.songPosition + Conductor.instance.instrumentalOffset));
@@ -1481,7 +1481,7 @@ class PlayState extends MusicBeatSubState
       && Conductor.instance.currentBeat % cameraZoomRate == 0)
     {
       // Set zoom multiplier for camera bop.
-      cameraBopMultiplier = cameraBopIntensity;
+      cameraBopMultiplier += (cameraBopIntensity - 1.0);
       // HUD camera zoom still uses old system. To change. (+3%)
       camHUD.zoom += hudCameraZoomIntensity * defaultHUDCameraZoom;
     }
@@ -2092,10 +2092,11 @@ class PlayState extends MusicBeatSubState
 
     vocals.pause();
 
-    FlxG.sound.music.play(FlxG.sound.music.time);
+    FlxG.sound.music.time = Conductor.instance.songPosition;
+    FlxG.sound.music.play(false, Conductor.instance.songPosition + Conductor.instance.instrumentalOffset);
 
-    vocals.time = FlxG.sound.music.time;
-    vocals.play(false, FlxG.sound.music.time);
+    vocals.time = Conductor.instance.songPosition;
+    vocals.play(false, Conductor.instance.songPosition);
   }
 
   /**
@@ -2224,7 +2225,7 @@ class PlayState extends MusicBeatSubState
     // Process hold notes on the opponent's side.
     for (holdNote in opponentStrumline.holdNotes.members)
     {
-      if (holdNote == null || !holdNote.alive) continue;
+      if (holdNote == null || !holdNote.alive || holdNote.noAnimation) continue;
 
       // While the hold note is being hit, and there is length on the hold note...
       if (holdNote.hitNote && !holdNote.missedNote && holdNote.sustainLength > 0)

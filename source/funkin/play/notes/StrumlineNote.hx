@@ -16,7 +16,7 @@ class StrumlineNote extends FlxSprite
 
   var confirmHoldTimer:Float = -1;
 
-  static final CONFIRM_HOLD_TIME:Float = 0.1;
+  static final CONFIRM_HOLD_TIME:Float = 0.15;
 
   function set_direction(value:NoteDirection):NoteDirection
   {

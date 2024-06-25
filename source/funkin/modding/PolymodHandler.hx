@@ -228,44 +228,83 @@ class PolymodHandler
   {
     // Add default imports for common classes.
 
+    Polymod.addDefaultImport(Std);
+    Polymod.addDefaultImport(Math);
+    Polymod.addDefaultImport(flixel.FlxG);
+    Polymod.addDefaultImport(flixel.FlxG);
+    Polymod.addDefaultImport(funkin.modding.module.Module);
+    Polymod.addDefaultImport(funkin.modding.module.ModuleHandler);
+    Polymod.addDefaultImport(funkin.play.PlayState);
+    Polymod.addDefaultImport(funkin.Paths);
+    Polymod.addDefaultImport(funkin.Preferences);
+
+    Polymod.addDefaultImport(haxe.Json);
+    Polymod.addDefaultImport(openfl.utils.Assets);
+    Polymod.addDefaultImport(lime.app.Application);
+    // Polymod.addDefaultImport(lime.app.Application.current.window);
+    Polymod.addDefaultImport(flixel.FlxSprite);
+    Polymod.addDefaultImport(funkin.graphics.FunkinSprite);
+    Polymod.addDefaultImport(flixel.FlxBasic);
+    Polymod.addDefaultImport(flixel.tweens.FlxEase);
+    Polymod.addDefaultImport(flixel.tweens.FlxTween);
+    Polymod.addDefaultImport(flixel.system.FlxAssets);
+    Polymod.addDefaultImport(flixel.math.FlxMath);
+    Polymod.addDefaultImport(flixel.group.FlxGroup);
+    Polymod.addDefaultImport(flixel.group.FlxGroup.FlxTypedGroup);
+    Polymod.addDefaultImport(flixel.group.FlxSpriteGroup);
+    Polymod.addDefaultImport(flixel.text.FlxText);
+    Polymod.addDefaultImport(flixel.util.FlxTimer);
+    // Polymod.addDefaultImport(hxvlc.flixel.FlxVideo);
+    // Polymod.addDefaultImport(hxvlc.flixel.FlxVideoSprite);
+    // Polymod.addDefaultImport(hxvlc.openfl.Video);
+    Polymod.addDefaultImport(flixel.FlxBasic);
+
     // Add import aliases for certain classes.
     // NOTE: Scripted classes are automatically aliased to their parent class.
     Polymod.addImportAlias('flixel.math.FlxPoint', flixel.math.FlxPoint.FlxBasePoint);
+
+    // Polymod.addDefaultImport(flixel.util.FlxColor); FUCK
+    Polymod.addDefaultImport(Type.resolveClass('flixel.util.FlxColor_HSC'), "flixel.util.FlxColor");
+    Polymod.addDefaultImport(Type.resolveClass('flixel.util.FlxColor_HSC'), "FlxColor");
 
     // Add blacklisting for prohibited classes and packages.
 
     // `Sys`
     // Sys.command() can run malicious processes
-    Polymod.blacklistImport('Sys');
+    // Polymod.blacklistImport('Sys');
+    Polymod.addDefaultImport(Sys);
 
     // `Reflect`
     // Reflect.callMethod() can access blacklisted packages
-    Polymod.blacklistImport('Reflect');
+    // Polymod.blacklistImport('Reflect');
+    Polymod.addDefaultImport(Reflect);
 
     // `Type`
     // Type.createInstance(Type.resolveClass()) can access blacklisted packages
-    Polymod.blacklistImport('Type');
+    // Polymod.blacklistImport('Type');
+    Polymod.addDefaultImport(Type);
 
     // `cpp.Lib`
     // Lib.load() can load malicious DLLs
-    Polymod.blacklistImport('cpp.Lib');
+    // Polymod.blacklistImport('cpp.Lib');
+    Polymod.addDefaultImport(cpp.Lib);
 
     // `polymod.*`
     // You can probably unblacklist a module
-    for (cls in ClassMacro.listClassesInPackage('polymod'))
-    {
-      if (cls == null) continue;
-      var className:String = Type.getClassName(cls);
-      Polymod.blacklistImport(className);
-    }
+    /*for (cls in ClassMacro.listClassesInPackage('polymod'))
+      {
+        if (cls == null) continue;
+        var className:String = Type.getClassName(cls);
+        Polymod.blacklistImport(className);
+    }*/
 
     // `sys.*`
-    for (cls in ClassMacro.listClassesInPackage('sys'))
-    {
-      if (cls == null) continue;
-      var className:String = Type.getClassName(cls);
-      Polymod.blacklistImport(className);
-    }
+    /*for (cls in ClassMacro.listClassesInPackage('sys'))
+      {
+        if (cls == null) continue;
+        var className:String = Type.getClassName(cls);
+        Polymod.blacklistImport(className);
+    }*/
   }
 
   static function buildParseRules():polymod.format.ParseRules
@@ -276,6 +315,7 @@ class PolymodHandler
     // Ensure script files have merge support.
     output.addType('hscript', TextFileFormat.PLAINTEXT);
     output.addType('hxs', TextFileFormat.PLAINTEXT);
+    output.addType('haxe', TextFileFormat.PLAINTEXT);
     output.addType('hxc', TextFileFormat.PLAINTEXT);
     output.addType('hx', TextFileFormat.PLAINTEXT);
 

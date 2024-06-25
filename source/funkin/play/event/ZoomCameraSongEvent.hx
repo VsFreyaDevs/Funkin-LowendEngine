@@ -141,6 +141,12 @@ class ZoomCameraSongEvent extends SongEvent
         keys: [
           'Linear' => 'linear',
           'Instant' => 'INSTANT',
+          'Back In' => 'backIn',
+          'Back Out' => 'backOut',
+          'Back In/Out' => 'backInOut',
+          'Circ In' => 'circIn',
+          'Circ Out' => 'circOut',
+          'Circ In/Out' => 'circInOut',
           'Sine In' => 'sineIn',
           'Sine Out' => 'sineOut',
           'Sine In/Out' => 'sineInOut',
@@ -162,6 +168,9 @@ class ZoomCameraSongEvent extends SongEvent
           'Smooth Step In' => 'smoothStepIn',
           'Smooth Step Out' => 'smoothStepOut',
           'Smooth Step In/Out' => 'smoothStepInOut',
+          'Smoother Step In' => 'smootherStepIn',
+          'Smoother Step Out' => 'smootherStepOut',
+          'Smoother Step In/Out' => 'smootherStepInOut',
           'Elastic In' => 'elasticIn',
           'Elastic Out' => 'elasticOut',
           'Elastic In/Out' => 'elasticInOut'

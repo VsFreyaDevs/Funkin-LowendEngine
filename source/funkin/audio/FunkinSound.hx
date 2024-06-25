@@ -497,7 +497,9 @@ class FunkinSound extends FlxSound implements ICloneable<FunkinSound>
 
     // split the path and get only after first :
     // we are bypassing the openfl/lime asset library fuss
+    #if web
     path = Paths.stripLibrary(path);
+    #end
 
     var soundRequest = FlxPartialSound.partialLoadFromFile(path, start, end);
 

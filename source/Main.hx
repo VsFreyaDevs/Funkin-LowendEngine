@@ -93,7 +93,16 @@ class Main extends Sprite
 
   function setupGame():Void
   {
+    #if windows
+    @:functionCode("
+			#include <windows.h>
+			setProcessDPIAware() // allows for more crisp visuals
+		")
+    #end
+
     initHaxeUI();
+
+    flixel.system.FlxAssets.FONT_DEFAULT = "VCR OSD Mono";
 
     // addChild gets called by the user settings code.
     fpsCounter = new FPS(10, 3, 0xFFFFFF);
@@ -108,6 +117,9 @@ class Main extends Sprite
     Save.load();
     var game:FlxGame = new FlxGame(gameWidth, gameHeight, initialState, Preferences.framerate, Preferences.framerate, skipSplash, startFullscreen);
 
+    openfl.Lib.current.stage.align = "tl";
+    openfl.Lib.current.stage.scaleMode = openfl.display.StageScaleMode.NO_SCALE;
+
     // FlxG.game._customSoundTray wants just the class, it calls new from
     // create() in there, which gets called when it's added to stage
     // which is why it needs to be added before addChild(game) here
@@ -115,6 +127,10 @@ class Main extends Sprite
     game._customSoundTray = funkin.ui.options.FunkinSoundTray;
 
     addChild(game);
+
+    #if !mobile
+    applicationScreen.stage.scaleMode = openfl.display.StageScaleMode.NO_SCALE;
+    #end
 
     #if debug
     game.debugger.interaction.addTool(new funkin.util.TrackerToolButtonUtil());
