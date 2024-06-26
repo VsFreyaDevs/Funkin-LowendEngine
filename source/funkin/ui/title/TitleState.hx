@@ -325,8 +325,11 @@ class TitleState extends MusicBeatState
       NGio.unlockMedal(60960);
       // If it's Friday according to da clock
       if (Date.now().getDay() == 5) NGio.unlockMedal(61034);
-      titleText.animation.play('press');
-      FlxG.camera.flash(FlxColor.WHITE, 1);
+      if (Preferences.flashingLights)
+      {
+        titleText.animation.play('press');
+        FlxG.camera.flash(FlxColor.WHITE, 1);
+      }
       FunkinSound.playOnce(Paths.sound('confirmMenu'), 0.7);
       transitioning = true;
 
@@ -353,7 +356,7 @@ class TitleState extends MusicBeatState
       Sys.exit(0);
     }
     #end
-    
+
     if (controls.UI_LEFT) swagShader.update(-elapsed * 0.1);
     if (controls.UI_RIGHT) swagShader.update(elapsed * 0.1);
     if (!cheatActive && skippedIntro) cheatCodeShit();
@@ -408,7 +411,7 @@ class TitleState extends MusicBeatState
 
     FlxG.sound.music.fadeIn(4.0, 0.0, 1.0);
 
-    FlxG.camera.flash(FlxColor.WHITE, 1);
+    if (Preferences.flashingLights) FlxG.camera.flash(FlxColor.WHITE, 1);
     FunkinSound.playOnce(Paths.sound('confirmMenu'), 0.7);
   }
 

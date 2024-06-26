@@ -97,6 +97,7 @@ class Save
           antialiasing: true,
           flashingLights: true,
           zoomCamera: true,
+          coloredHealthBar: false,
           debugDisplay: false,
           autoPause: true,
           inputOffset: 0,
@@ -1071,7 +1072,7 @@ typedef SaveDataOptions =
    */
   var noteSplash:Bool;
 
-  
+
   /**
    * Whether some particularly fowl language is displayed.
    * @default `true`
@@ -1114,6 +1115,12 @@ typedef SaveDataOptions =
    * @default `false`
    */
   var debugDisplay:Bool;
+
+  /**
+   * Changes default health bar colors to characters dominant color from health icon.
+   * @default `false`
+   */
+  var coloredHealthBar:Bool;
 
   /**
    * If enabled, the game will automatically pause when tabbing out.

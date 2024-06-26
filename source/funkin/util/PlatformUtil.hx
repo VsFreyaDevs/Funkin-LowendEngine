@@ -58,4 +58,7 @@ enum HostPlatform
   LINUX;
   MAC;
   HTML5;
+  ANDROID;
+  IOS;
+  SWITCH;
 }

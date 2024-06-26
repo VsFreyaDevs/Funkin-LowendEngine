@@ -73,6 +73,9 @@ class PreferencesMenu extends Page
     createPrefItemCheckbox('Antialiasing', 'Disable to increase performance at the cost of sharper visuals.', function(value:Bool):Void {
       Preferences.antialiasing = value;
     }, Preferences.antialiasing);
+    createPrefItemCheckbox('Colored Health Bar', 'Enable to use the health bar with character-based colors', function(value:Bool):Void {
+      Preferences.coloredHealthBar = value;
+    }, Preferences.coloredHealthBar);
     createPrefItemCheckbox('Camera Zooming on Beat', 'Disable to stop the camera bouncing to the song', function(value:Bool):Void {
       Preferences.zoomCamera = value;
     }, Preferences.zoomCamera);

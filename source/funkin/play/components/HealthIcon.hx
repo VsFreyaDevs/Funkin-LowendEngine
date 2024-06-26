@@ -8,6 +8,7 @@ import funkin.play.character.CharacterData.CharacterDataParser;
 import openfl.utils.Assets;
 import funkin.graphics.FunkinSprite;
 import funkin.util.MathUtil;
+import flixel.util.FlxColor;
 
 /**
  * This is a rework of the health icon with the following changes:
@@ -282,6 +283,43 @@ class HealthIcon extends FunkinSprite
       this.updatePosition();
     }
   }
+
+  /**
+   * Get dominant color on icon.
+   * Used for Health Bar colors.
+  **/
+  inline public function getDominantColor():Int
+  {
+    var countByColor:Map<Int, Int> = [];
+    for (col in 0...frameWidth)
+    {
+      for (row in 0...frameHeight)
+      {
+        var colorOfThisPixel:Int = pixels.getPixel32(col, row);
+        if (colorOfThisPixel != 0)
+        {
+          if (countByColor.exists(colorOfThisPixel)) countByColor.set(colorOfThisPixel, (countByColor.get(colorOfThisPixel) ?? 0) + 1);
+          else if (countByColor.get(colorOfThisPixel) != 13520687 - (2 * 13520687)) countByColor.set(colorOfThisPixel, 1);
+        }
+      }
+    }
+
+    var maxCount = 0; // store max color count
+    var maxKey:Int = 0; // after the loop this will store the max color
+    countByColor[FlxColor.BLACK] = 0;
+    for (key in countByColor.keys())
+    {
+      var count:Int = countByColor.get(key) ?? 0;
+      if (count >= maxCount)
+      {
+        maxCount = count;
+        maxKey = key;
+      }
+    }
+    countByColor = [];
+    return maxKey;
+  }
+
 
   inline function initTargetSize():Void
   {

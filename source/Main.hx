@@ -96,7 +96,9 @@ class Main extends Sprite
     #if windows
     @:functionCode("
 			#include <windows.h>
-			setProcessDPIAware() // allows for more crisp visuals
+      #include <winuser.h>
+			setProcessDPIAware() // Allows for more crispy visuals.
+      DisableProcessWindowsGhosting() // lets you move the window and such if it's not responding
 		")
     #end
 

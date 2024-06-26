@@ -594,7 +594,7 @@ class PlayState extends MusicBeatSubState
   /**
    * The length of the current song, in milliseconds.
    */
-  var currentSongLengthMs(get, never):Float;
+  public var currentSongLengthMs(get, never):Float;
 
   function get_currentSongLengthMs():Float
   {
@@ -1063,7 +1063,7 @@ class PlayState extends MusicBeatSubState
 
         if (FlxG.sound.music != null) FlxG.sound.music.pause();
 
-        deathCounter += 1;
+        deathCounter += 2;
 
         dispatchEvent(new ScriptEvent(GAME_OVER));
 
@@ -1765,6 +1765,9 @@ class PlayState extends MusicBeatSubState
       iconP1.cameras = [camHUD];
     }
 
+    // CREATE HEALTH BAR WITH CHARACTERS COLORS
+    if (Preferences.coloredHealthBar) healthBar.createFilledBar(iconP2.getDominantColor(), iconP1.getDominantColor());
+    
     //
     // ADD CHARACTERS TO SCENE
     //
