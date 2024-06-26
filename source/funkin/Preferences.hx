@@ -8,21 +8,6 @@ import funkin.save.Save;
 class Preferences
 {
   /**
-   * The framerate.
-   * @default `60`
-   */
-  public static var framerate(get, set):Int;
-
-  static function get_framerate():Int
-  {
-    #if web
-    return 60;
-    #else
-    return Save?.instance?.options?.framerate ?? 60;
-    #end
-  }
-
-  /**
    * Whenever to display a splash animation when perfectly hitting a note.
    * @default `true`
    */
@@ -39,6 +24,21 @@ class Preferences
     save.options.noteSplash = value;
     save.flush();
     return value;
+  }
+
+  /**
+   * The framerate.
+   * @default `60`
+   */
+  public static var framerate(get, set):Int;
+
+  static function get_framerate():Int
+  {
+    #if web
+    return 60;
+    #else
+    return Save?.instance?.options?.framerate ?? 60;
+    #end
   }
 
   static function set_framerate(value:Int):Int
@@ -171,6 +171,25 @@ class Preferences
   }
 
   /**
+   * If disabled, the score text gets simplified to just the score display part.
+   * @default `false`
+   */
+  public static var expandedScore(get, set):Bool;
+
+  static function get_expandedScore():Bool
+  {
+    return Save?.instance?.options?.expandedScore;
+  }
+
+  static function set_expandedScore(value:Bool):Bool
+  {
+    var save:Save = Save.instance;
+    save.options.expandedScore = value;
+    save.flush();
+    return value;
+  }
+
+  /**
    * If enabled, an FPS and memory counter will be displayed even if this is not a debug build.
    * @default `false`
    */
@@ -233,7 +252,7 @@ class Preferences
     save.flush();
     return value;
   }
-  
+
   /**
    * Loads the user's preferences from the save data and apply them.
    */

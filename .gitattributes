@@ -1,1 +1,10 @@
 * text=auto eol=lf
+
+*.hxc linguist-language=Haxe
+*.hscript linguist-language=Haxe
+*.hx linguist-language=Haxe
+*.hxs linguist-language=Haxe
+*.xml linguist-language=XML
+*.js linguist-language=JavaScript
+*.md linguist-language=Markdown
+*.json linguist-language=JSON

@@ -455,7 +455,7 @@ class FreeplayState extends MusicBeatSubState
       });
 
     // TODO: Replace this.
-    if (currentCharacter == 'pico') dj.visible = false;
+    if (currentCharacter == 'pico' || currentCharacter == 'tankman' || currentCharacter == 'hank') dj.visible = false;
 
     add(dj);
 

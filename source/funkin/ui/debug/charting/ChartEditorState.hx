@@ -6487,7 +6487,7 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
 
   function applyWindowTitle():Void
   {
-    var inner:String = 'New Chart';
+    var inner:String = 'Untitled Chart';
     var cwfp:Null<String> = currentWorkingFilePath;
     if (cwfp != null)
     {

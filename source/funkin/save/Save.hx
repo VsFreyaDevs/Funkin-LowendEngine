@@ -98,6 +98,7 @@ class Save
           flashingLights: true,
           zoomCamera: true,
           coloredHealthBar: false,
+          expandedScore: false,
           debugDisplay: false,
           autoPause: true,
           inputOffset: 0,
@@ -1109,6 +1110,12 @@ typedef SaveDataOptions =
    * @default `false`
    */
   var zoomCamera:Bool;
+
+  /**
+   * If disabled, the score text gets simplified to just the score display part.
+   * @default `false`
+   */
+  var expandedScore:Bool;
 
   /**
    * If enabled, an FPS and memory counter will be displayed even if this is not a debug build.

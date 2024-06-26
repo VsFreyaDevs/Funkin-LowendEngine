@@ -76,6 +76,9 @@ class PreferencesMenu extends Page
     createPrefItemCheckbox('Colored Health Bar', 'Enable to use the health bar with character-based colors', function(value:Bool):Void {
       Preferences.coloredHealthBar = value;
     }, Preferences.coloredHealthBar);
+    createPrefItemCheckbox('Expanded Score Text', 'Enable to display misses and accuracy', function(value:Bool):Void {
+      Preferences.expandedScore = value;
+    }, Preferences.expandedScore);
     createPrefItemCheckbox('Camera Zooming on Beat', 'Disable to stop the camera bouncing to the song', function(value:Bool):Void {
       Preferences.zoomCamera = value;
     }, Preferences.zoomCamera);
@@ -126,7 +129,7 @@ class PreferencesMenu extends Page
       var value = !checkbox.currentValue;
       onChange(value);
       checkbox.currentValue = value;
-    });
+    }, true);
 
     preferenceItems.add(checkbox);
   }

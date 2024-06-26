@@ -110,7 +110,7 @@ class NoteSprite extends FunkinSprite
    * Set this flag to disable playing animation on hit/miss.
    */
   public var noAnimation:Bool = false;
-  
+
   /**
    * Set this flag to true when hitting the note to avoid scoring it multiple times.
    */
@@ -236,6 +236,8 @@ class NoteSprite extends FunkinSprite
     this.hasBeenHit = false;
     this.mayHit = false;
     this.hasMissed = false;
+
+    this.noAnimation = false;
 
     this.hsvShader.hue = 1.0;
     this.hsvShader.saturation = 1.0;
