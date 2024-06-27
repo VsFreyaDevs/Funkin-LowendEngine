@@ -2896,6 +2896,11 @@ songMisses += 1;
 
     if (isComboBreak)
     {
+      // BANDAID FIX: Play GF's crying animation if combo of 70 or more is broken.
+      // TODO: Handle this in play.character.BaseCharacter instead!
+      if (Highscore.tallies.combo >= 70)
+        currentStage.getGirlfriend().playAnimation('drop70', true);
+
       // Break the combo, but don't increment tallies.misses.
       if (Highscore.tallies.combo >= 10) comboPopUps.displayCombo(0);
       Highscore.tallies.combo = 0;
