@@ -73,6 +73,27 @@ class MathUtil
     return flixel.math.FlxMath.bound(ratio * 60 * FlxG.elapsed, 0, 1);
   }
 
+  inline public static function quantize(f:Float, interval:Float)
+  {
+    return Std.int((f + interval / 2) / interval) * interval;
+  }
+
+  public static function numberArray(max:Int, ?min = 0):Array<Int>
+  {
+    var dumbArray:Array<Int> = [];
+    for (i in min...max)
+      dumbArray.push(i);
+    return dumbArray;
+  }
+
+  public static function truncateFloat(number:Float, precision:Int):Float
+  {
+    var num = number;
+    num = num * Math.pow(10, precision);
+    num = Math.round(num) / Math.pow(10, precision);
+    return num;
+  }
+
   public static function easeInOutCirc(x:Float):Float
   {
     if (x <= 0.0) return 0.0;
@@ -102,6 +123,16 @@ class MathUtil
     if (x >= 1.0) return 1.0;
     return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2);
   }
+
+  public static inline function addZeros(str:String, num:Int)
+  {
+    while (str.length < num)
+      str = '0${str}';
+    return str;
+  }
+
+  inline public static function GCD(a, b)
+    return b == 0 ? FlxMath.absInt(a) : GCD(b, a % b);
 
   /**
    * Get the base-2 logarithm of a value.

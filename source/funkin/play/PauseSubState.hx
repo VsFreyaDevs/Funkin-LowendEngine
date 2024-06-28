@@ -758,7 +758,7 @@ class PauseSubState extends MusicBeatSubState
     FlxTransitionableState.skipNextTransOut = true;
     state.openSubState(new funkin.ui.transition.StickerSubState(null, (sticker) -> new funkin.ui.options.OptionsState()));
   }
-  
+
   /**
    * Quit the game and return to the chart editor.
    * @param state The current PauseSubState.
