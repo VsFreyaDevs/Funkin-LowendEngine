@@ -181,6 +181,7 @@ class BaseCharacter extends Bopper
       this.characterName = _data.name;
       this.name = _data.name;
       this.danceEvery = _data.danceEvery;
+      
       this.singTimeSteps = _data.singTime;
       this.globalOffsets = _data.offsets;
       this.flipX = _data.flipX;
@@ -522,8 +523,8 @@ class BaseCharacter extends Bopper
       // If the note is from the same strumline, play the sing animation.
       this.playSingAnimation(event.note.noteData.getDirection(), true);
     }
-    
-    /**  
+
+    /**
      * This GF animation code only runs when the player lets a note fly off the screen.
      * Run this for all combo breaks instead (bad/shit).
      * Maybe add a new public function called onComboBreak in play.stage.Bopper?

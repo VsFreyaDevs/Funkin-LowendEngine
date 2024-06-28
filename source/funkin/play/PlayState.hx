@@ -861,19 +861,6 @@ class PlayState extends MusicBeatSubState
 
   public override function draw():Void
   {
-    // if (FlxG.renderBlit)
-    // {
-    //  camGame.fill(BACKGROUND_COLOR);
-    // }
-    // else if (FlxG.renderTile)
-    // {
-    //  FlxG.log.warn("PlayState background not displayed properly on tile renderer!");
-    // }
-    // else
-    // {
-    //  FlxG.log.warn("PlayState background not displayed properly, unknown renderer!");
-    // }
-
     super.draw();
   }
 
