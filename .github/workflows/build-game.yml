@@ -1,129 +1,90 @@
-name: Build and Upload nightly game builds
-
+# This is a basic workflow to help you get started with Actions
+name:  Build CI
+# Controls when the workflow will run
 on:
-  workflow_dispatch:
   push:
-    paths-ignore:
-    - '**/Dockerfile'
-    - '.github/workflows/build-docker-image.yml'
-
+    branches:
+      - develop
+  workflow_dispatch:
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-
-  build-game-on-host:
-    strategy:
-      matrix:
-        include:
-        - target: windows
-        - target: macos
-    runs-on:
-    - ${{ matrix.target }}
-    defaults:
-      run:
-        shell: bash
-
+  buildWindows:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+    # The name of the job
+    name: Windows x64 Build
+    permissions:
+       contents: write
+       actions: write
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Make git happy
-      run: |
-        git config --global --replace-all safe.directory $GITHUB_WORKSPACE
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Pulling the new commit
+        uses: actions/checkout@main
+        with:
+          submodules: true # PLEASE LEAVE SUBMODULES ENABLED!!!!!!!!!!
+      - name: Setting up Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.4
+      # Took the caching functions from Codename Engine
+      - name: Restore existing build cache for faster compilation
+        id: cache-restore
+        uses: actions/cache/restore@v4
+        with:
+          key: cache-build-windows
+          path: |
+            export/release/windows/haxe/
+            export/release/windows/obj/
 
-    - name: Get checkout token
-      uses: actions/create-github-app-token@v1
-      id: app_token
-      with:
-        app-id: ${{ vars.APP_ID }}
-        private-key: ${{ secrets.APP_PEM }}
-        owner: ${{ github.repository_owner }}
-
-    - name: Checkout repo
-      uses: funkincrew/ci-checkout@v6
-      with:
-        submodules: 'recursive'
-        token: ${{ steps.app_token.outputs.token }}
-        persist-credentials: false
-
-    - name: Setup build environment
-      uses: ./.github/actions/setup-haxe
-      with:
-        gh-token: ${{ steps.app_token.outputs.token }}
-
-    - name: Build game
-      if: ${{ matrix.target == 'windows' }}
-      run: |
-        haxelib run lime build windows -v -release -DGITHUB_BUILD
-      timeout-minutes: 120
-    - name: Build game
-      if: ${{ matrix.target != 'windows' }}
-      run: |
-        haxelib run lime build ${{ matrix.target }} -v -release --times -DGITHUB_BUILD
-      timeout-minutes: 120
-
-    - name: Upload build artifacts
-      uses: ./.github/actions/upload-itch
-      with:
-        butler-key: ${{ secrets.BUTLER_API_KEY}}
-        target: ${{ matrix.target }}
-
-  build-game-in-container:
-    runs-on: build-set
-    container: ghcr.io/funkincrew/build-dependencies:latest
-    strategy:
-      matrix:
-        include:
-        - target: linux
-        - target: html5
-    defaults:
-      run:
-        shell: bash
-
-    steps:
-    - name: Get checkout token
-      uses: actions/create-github-app-token@v1
-      id: app_token
-      with:
-        app-id: ${{ vars.APP_ID }}
-        private-key: ${{ secrets.APP_PEM }}
-        owner: ${{ github.repository_owner }}
-
-    - name: Checkout repo
-      uses: funkincrew/ci-checkout@v6
-      with:
-        submodules: 'recursive'
-        token: ${{ steps.app_token.outputs.token }}
-        persist-credentials: false
-
-    - name: Config haxelib
-      run: |
-        haxelib --never newrepo
-        echo "HAXEPATH=$(haxelib config)" >> "$GITHUB_ENV"
-
-    - name: Restore cached dependencies
-      id: cache-hmm
-      uses: actions/cache@v4
-      with:
-        path: .haxelib
-        key: haxe-hmm-${{ runner.os }}-${{ hashFiles('**/hmm.json') }}
-
-    - if: ${{ steps.cache-hmm.outputs.cache-hit != 'true' }}
-      name: Install dependencies
-      run: |
-        git config --global 'url.https://x-access-token:${{ steps.app_token.outputs.token }}@github.com/.insteadOf' https://github.com/
-        haxelib --global run hmm install -q
-
-    - if: ${{ matrix.target != 'html5' }}
-      name: Restore hxcpp cache
-      uses: actions/cache@v4
-      with:
-        path: /usr/share/hxcpp
-        key: haxe-hxcpp-${{ runner.os }}-${{ github.ref_name }}-${{ github.sha }}
-        restore-keys: haxe-hxcpp-${{ runner.os }}-${{ github.ref_name }}
-
-    - name: Build game
-      run: |
-        haxelib run lime build ${{ matrix.target }} -v -release --times -DGITHUB_BUILD
-      timeout-minutes: 120
-
-    - name: Upload build artifacts
-      uses: ./.github/actions/upload-itch
-      with:
-        butler-key: ${{ secrets.BUTLER_API_KEY}}
-        target: ${{ matrix.target }}
+      # Runs a set of commands using the runners shell
+      - name: Install libraries through HMM
+        run: |
+          haxellib setup C:/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          haxelib install hmm --quiet
+          haxelib run hmm setup
+          haxelib run hmm install --quiet
+          haxelib run lime build windows
+      - name: Build the engine
+        run: |
+          haxellib setup C:/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          haxelib install hmm --quiet
+          haxelib run hmm setup
+          haxelib run hmm install --quiet
+          haxelib run lime build windows
+        shell: cmd
+      - name: Publish Artifact
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          name: windowsBuild
+          path: export/release/windows/bin
+      - name: Clear already existing cache
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            for (const cache of caches.data.actions_caches) {
+              if (cache.key == "cache-build-windows") {
+                console.log('Clearing ' + cache.key + '...')
+                await github.rest.actions.deleteActionsCacheById({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                })
+                console.log("Cache cleared.")
+              }
+            }
+      - name: Save new cache
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            export/release/windows/haxe/
+            export/release/windows/obj/
+            export/debug/windows/haxe/
+            export/debug/windows/obj/
+          key: cache-build-windows
