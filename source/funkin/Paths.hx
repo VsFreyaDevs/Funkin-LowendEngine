@@ -141,6 +141,7 @@ class Paths
     return getPath('images/$key.png', IMAGE, library);
   }
 
+  // TODO: make this work on mods too
   public static function font(key:String):String
   {
     return 'assets/fonts/$key';
