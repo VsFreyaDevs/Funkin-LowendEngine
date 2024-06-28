@@ -10,6 +10,8 @@ import flixel.tweens.FlxEase;
 import flixel.math.FlxPoint;
 import flixel.math.FlxMath;
 
+using StringTools;
+
 /**
  * Utility functions, most that aren't in the OG game, can be used for scripts maybe.
  */
