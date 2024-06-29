@@ -542,6 +542,7 @@ class FunkinSound extends FlxSound implements ICloneable<FunkinSound>
    * @param volume
    * @return A `FunkinSound` object, or `null` if the sound could not be loaded.
    */
+  @:nullSafety(Off)
   public static function playOnce(key:String, volume:Float = 1.0, ?onComplete:Void->Void, ?onLoad:Void->Void):FunkinSound
   {
     var result = FunkinSound.load(key, volume, false, true, true, onComplete, onLoad);
