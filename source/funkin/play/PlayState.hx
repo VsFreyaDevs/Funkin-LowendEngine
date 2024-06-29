@@ -259,6 +259,21 @@ class PlayState extends MusicBeatSubState
   public var totalNotesPlayed:Int = 0;
 
   /**
+   * The amount of notes per second.
+   */
+  public var notesPerSecond:Int = 0;
+
+  /**
+   * Array of the amount of notes per second.
+   */
+  public var npsArray:Array<Date> = [];
+
+  /**
+   * The maximum amount of notes per second.
+   */
+  public var maxNps:Int = 0;
+  
+  /**
    * The values for the rating system.
    */
   public static var ratingStuff:Array<Dynamic> = [

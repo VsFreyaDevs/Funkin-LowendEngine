@@ -130,10 +130,6 @@ class Main extends Sprite
 
     addChild(game);
 
-    #if !mobile
-    applicationScreen.stage.scaleMode = openfl.display.StageScaleMode.NO_SCALE;
-    #end
-
     #if debug
     game.debugger.interaction.addTool(new funkin.util.TrackerToolButtonUtil());
     #end
