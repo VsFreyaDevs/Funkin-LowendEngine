@@ -566,6 +566,90 @@ class FileUtil
   }
 
   /**
+   * Moves a file from one location to another.
+   * Only works on desktop.
+   *
+   * @param path The path to the file.
+   * @param destination The path to move the file to.
+   */
+  public static function moveFile(path:String, destination:String):Void
+  {
+    #if sys
+    if (doesFileExist(path))
+    {
+      if (isDirectory(path))
+      {
+        trace('WARNING: Path is a directory: $path - attempting to move as a directory instead');
+        moveDir(path, destination);
+        return;
+      }
+
+      var destinationFolder:String = destination;
+      if (Path.extension(destination) != '')
+      {
+        destinationFolder = Path.directory(destination);
+      }
+
+      createDirIfNotExists(destinationFolder);
+      sys.FileSystem.rename(path, Path.join([destinationFolder, Path.withoutDirectory(path)]));
+    }
+    else
+    {
+      throw 'File does not exist: $path';
+    }
+    #else
+    throw 'Direct file moving by path not supported on this platform.';
+    #end
+  }
+
+  /**
+   * Delete a file at the given path.
+   * Only works on desktop.
+   *
+   * @param path The path to the file.
+   */
+  public static function deleteFile(path:String):Void
+  {
+    #if sys
+    sys.FileSystem.deleteFile(path);
+    #else
+    throw 'Direct file deletion by path not supported on this platform.';
+    #end
+  }
+
+  /**
+   * Get a file's size in bytes. Max representable size is ~2.147 GB.
+   * Only works on desktop.
+   *
+   * @param path The path to the file.
+   * @return The size of the file in bytes.
+   */
+  public static function getFileSize(path:String):Int
+  {
+    #if sys
+    return sys.FileSystem.stat(path).size;
+    #else
+    return -1;
+    #end
+  }
+
+  /**
+   * Check if a path is a directory.
+   * Only works on desktop.
+   *
+   * @param path The path to the (potential) directory.
+   * @return Whether the path is a directory or not.
+   */
+  public static function isDirectory(path:String):Bool
+  {
+    #if sys
+    return sys.FileSystem.isDirectory(path);
+    #else
+    return false;
+    #end
+  }
+
+  /**
    * Create a directory if it doesn't already exist.
    * Only works on desktop.
    *
@@ -578,6 +662,145 @@ class FileUtil
     {
       sys.FileSystem.createDirectory(dir);
     }
+    #end
+  }
+
+  /**
+   * List all entries in a directory.
+   * Only works on desktop.
+   *
+   * @param path The path to the directory.
+   * @return An array of file and directory names in the directory.
+   */
+  public static function readDir(path:String):Array<String>
+  {
+    #if sys
+    return sys.FileSystem.readDirectory(path);
+    #else
+    return [];
+    #end
+  }
+
+  /**
+   * Move a directory from one location to another, optionally ignoring some paths.
+   * Only works on desktop.
+   *
+   * @param path The path to the directory.
+   * @param destination The path to move the directory to.
+   * @param ignore A list of file names to ignore.
+   */
+  public static function moveDir(path:String, destination:String, ?ignore:Array<String>):Void
+  {
+    #if sys
+    if (!isDirectory(path))
+    {
+      trace('WARNING: Path is not a directory: $path, moving as a file instead');
+      moveFile(path, destination);
+      return;
+    }
+
+    createDirIfNotExists(destination);
+
+    ignore = ignore ?? [];
+    for (entry in readDir(path))
+    {
+      if (ignore.indexOf(Path.join([path, entry])) != -1) continue;
+      if (isDirectory(Path.join([path, entry])))
+      {
+        moveDir(Path.join([path, entry]), Path.join([destination, entry]), ignore);
+      }
+      else
+      {
+        moveFile(Path.join([path, entry]), Path.join([destination, entry]));
+      }
+    }
+
+    if (readDir(path).length == 0)
+    {
+      deleteDir(path);
+    }
+    #else
+    throw 'Direct directory moving by path not supported on this platform.';
+    #end
+  }
+
+  /**
+   * Delete a directory, optionally including its contents, and optionally ignoring some paths.
+   * Only works on desktop.
+   *
+   * @param path The path to the directory.
+   * @param recursive Whether to delete all contents of the directory.
+   * @param ignore A list of file names to ignore.
+   */
+  public static function deleteDir(path:String, recursive:Bool = false, ?ignore:Array<String>):Void
+  {
+    #if sys
+    if (!isDirectory(path))
+    {
+      throw 'Path is not a directory: $path';
+    }
+
+    if (recursive)
+    {
+      ignore = ignore ?? [];
+      for (entry in readDir(path))
+      {
+        if (ignore.indexOf(Path.join([path, entry])) != -1) continue;
+        var entryPath = Path.join([path, entry]);
+        if (isDirectory(entryPath))
+        {
+          deleteDir(entryPath, true, ignore);
+        }
+        else
+        {
+          deleteFile(entryPath);
+        }
+      }
+
+      if (readDir(path).length == 0)
+      {
+        sys.FileSystem.deleteDirectory(path);
+      }
+    } else {
+      sys.FileSystem.deleteDirectory(path);
+    }
+    #else
+    throw 'Direct directory deletion by path not supported on this platform.';
+    #end
+  }
+
+  /**
+   * Get a directory's total size in bytes. Max representable size is ~2.147 GB.
+   * Only works on desktop.
+   *
+   * @param path The path to the directory.
+   * @return The total size of the directory in bytes.
+   */
+  public static function getDirSize(path:String):Int
+  {
+    #if sys
+    if (!isDirectory(path))
+    {
+      throw 'Path is not a directory: $path';
+    }
+
+    var total:Int = 0;
+    for (entry in readDir(path))
+    {
+      var entryPath = Path.join([path, entry]);
+      if (isDirectory(entryPath))
+      {
+        total += getDirSize(entryPath);
+      }
+      else
+      {
+        total += getFileSize(entryPath);
+      }
+    }
+
+    return total;
+    #else
+    return -1;
     #end
   }
 
@@ -610,6 +833,43 @@ class FileUtil
     #end
     #else
     return null;
+    #end
+  }
+
+  /**
+   * Rename a file or directory.
+   * Only works on desktop.
+   *
+   * @param path The path to the file or directory.
+   * @param newName The new name of the file or directory.
+   * @param keepExtension Whether to keep the extension the same, if applicable.
+   */
+  public static function rename(path:String, newName:String, keepExtension:Bool = true):Void
+  {
+    #if sys
+    if (doesFileExist(path))
+    {
+      newName = Path.withoutDirectory(newName);
+      if (!isDirectory(path))
+      {
+        if (keepExtension)
+        {
+          newName = Path.withExtension(Path.withoutExtension(newName), Path.extension(path));
+        }
+        else if (Path.extension(newName) == '')
+        {
+          newName = Path.withExtension(newName, Path.extension(path));
+        }
+      }
+
+      sys.FileSystem.rename(path, Path.join([Path.directory(path), newName]));
+    }
+    else
+    {
+      throw 'Path does not exist: $path';
+    }
+    #else
+    throw 'Direct file renaming by path not supported on this platform.';
     #end
   }
 
