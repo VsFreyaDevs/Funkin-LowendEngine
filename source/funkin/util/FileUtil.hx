@@ -687,7 +687,7 @@ class FileUtil
    *
    * @param path The path to the directory.
    * @param destination The path to move the directory to.
-   * @param ignore A list of file names to ignore.
+   * @param ignore A list of paths to ignore.
    */
   public static function moveDir(path:String, destination:String, ?ignore:Array<String>):Void
   {
@@ -730,7 +730,7 @@ class FileUtil
    *
    * @param path The path to the directory.
    * @param recursive Whether to delete all contents of the directory.
-   * @param ignore A list of file names to ignore.
+   * @param ignore A list of paths to ignore.
    */
   public static function deleteDir(path:String, recursive:Bool = false, ?ignore:Array<String>):Void
   {
